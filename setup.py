@@ -19,8 +19,7 @@ setup(
     description='Command line tool for downloading dependencies from config '
                 'file',
     long_description=readme,
-    author='Avihoo Mamka',
-    author_email='avihoo.mamka@gmail.com',
+    author='Onfido',
     url='https://github.com/onfido/dependencies-resolver/',
     license=_license,
     packages=find_packages(exclude=('tests', 'docs')),
