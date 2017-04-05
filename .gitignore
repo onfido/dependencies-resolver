@@ -1,0 +1,16 @@
+# Files to ignore.
+#  Note: If a certain file type is necessary for the project (like .png for
+#   templates), then it should not occur here.
+*~
+*.pyc
+*.swp
+*.DS_STORE
+*.idea
+*.log
+*.pid
+.cache/
+*__pycache__*
+ref/
+logs/
+ve/
+data/

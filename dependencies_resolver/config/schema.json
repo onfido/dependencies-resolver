@@ -1,0 +1,33 @@
+{
+  "properties": {
+    "dependencies": {
+      "items": {
+        "properties": {
+          "location": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "name",
+          "location"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "repository": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "repository"
+  ],
+  "type": "object"
+}
