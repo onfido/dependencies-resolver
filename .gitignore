@@ -14,3 +14,5 @@ ref/
 logs/
 ve/
 data/
+dist/*
+*.egg-info/
