@@ -2,6 +2,16 @@
 Dependencies Resolver
 ===============================
 
+.. image:: https://img.shields.io/pypi/d/dependencies-resolver.svg
+    :target: https://pypi.python.org/pypi/dependencies-resolver/
+    :alt: Downloads
+.. image:: https://img.shields.io/pypi/v/dependencies-resolver.svg
+    :target: https://pypi.python.org/pypi/dependencies-resolver/
+    :alt: Latest Version
+.. image:: https://img.shields.io/pypi/l/dependencies-resolver.svg
+    :target: https://pypi.python.org/pypi/dependencies-resolver/
+    :alt: License
+
 Command line tool for downloading dependencies from a configuration file.
 The configuration file must follow the schema configured in `config/schema
 .json`.
