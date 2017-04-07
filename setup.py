@@ -15,7 +15,7 @@ requirements = [str(ir.req) for ir in install_requirements]
 
 setup(
     name='dependencies-resolver',
-    version='0.0.6',
+    version='0.0.9',
     description='Command line tool for downloading dependencies from config '
                 'file',
     long_description=readme,
