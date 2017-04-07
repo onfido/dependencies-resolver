@@ -3,12 +3,16 @@ from __future__ import division
 from __future__ import print_function
 
 import datetime
+import tempfile
 
 import pytest
 from dateutil.tz import tzutc
 from mock import patch
 
-from dependencies_resolver.utils.s3_utils import get_latest_version, get_key
+from dependencies_resolver.utils.s3_utils import get_latest_version, get_key, \
+    file_already_exists
+
+MOCKED_MD5_CHECKSUM = '"d41d8cd98f00b204e9800998ecf8427e-0"'
 
 
 def _mock_get_response(self, operation_name, kwarg):
@@ -21,6 +25,8 @@ def _mock_get_response(self, operation_name, kwarg):
     :param kwarg: Additional arguments.
     :return: The mocked response.
     """
+
+    response = {}
     if operation_name == 'ListObjects':
         # Returns a mocked response
         response = {'Name': kwarg['Bucket'], 'ResponseMetadata': {
@@ -36,7 +42,9 @@ def _mock_get_response(self, operation_name, kwarg):
                                   'StorageClass': 'STANDARD',
                                   'Key': 'model/2011-01-01-23-44-12/model',
                                   'Size': 418}]}
-        return response
+    elif operation_name == 'HeadObject':
+        response = {'ETag': MOCKED_MD5_CHECKSUM}
+    return response
 
 
 def _mock_get_empty_response(self, operation_name, kwarg):
@@ -90,3 +98,16 @@ def test_get_key():
         key = get_key('test-bucket', 'model', '2011-01-01-23-44-12')
         expected_key = 'model/2011-01-01-23-44-12/model'
         assert key == expected_key
+
+
+def test_file_already_exists():
+    """A test to check equality of mocked response for a remote file,
+    and a local file.
+
+    :return: True, unless the function is not working as we expected.
+    """
+    with patch('botocore.client.BaseClient._make_api_call',
+               new=_mock_get_response):
+        with tempfile.NamedTemporaryFile() as f:
+            result = file_already_exists('test-bucket', f.name, f.name)
+            assert result is True
