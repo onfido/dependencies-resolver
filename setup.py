@@ -29,12 +29,5 @@ setup(
         'console_scripts': [
             'dependencies-resolver = dependencies_resolver.main:main', ], },
     keywords=['python', 's3', 'aws', 'download', 'binaries', 'resources',
-              'boto3', 'dependencies', 'downloader', 'dependency-management'],
-    classifiers=(
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-    ),
+              'boto3', 'dependencies', 'downloader', 'dependency-management']
 )

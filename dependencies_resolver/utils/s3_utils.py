@@ -49,9 +49,9 @@ def get_object_md5_checksum(bucket, key):
 
 
 def get_latest_version(bucket, name):
-    """This function gets a bucket and a name of resource, and returns the 
+    """This function gets a bucket and a name of resource, and returns the
     latest version stored for this resource.
-    
+
     :param bucket: The name of the bucket.
     :param name: The name of the resource.
     :return: The latest version for this resource stored in the bucket.
@@ -71,10 +71,10 @@ def get_latest_version(bucket, name):
 
 
 def version_exists(bucket, name, version):
-    """This function gets a bucket, resource name and version and checks if 
-    the version exists for that resource. Returns True if exists, 
+    """This function gets a bucket, resource name and version and checks if
+    the version exists for that resource. Returns True if exists,
     and False otherwise.
-    
+
     :param bucket: The name of the bucket.
     :param name: The name of the resource.
     :param version: The version of the resource.
@@ -86,14 +86,14 @@ def version_exists(bucket, name, version):
 
 
 def get_key(bucket, name, version):
-    """This function gets a bucket name, resource name and version and 
-    returns the constructed key if the version exists for that resource, 
+    """This function gets a bucket name, resource name and version and
+    returns the constructed key if the version exists for that resource,
     or ValueError exception is being raised otherwise.
-    
+
     :param bucket: The name of the bucket.
     :param name: The name of the resource.
     :param version: The version of the resource.
-    :return: The S3 key for downloading the resource if the version exists, 
+    :return: The S3 key for downloading the resource if the version exists,
     ValueError exception is being raised otherwise.
     """
     _version_exists, version = version_exists(bucket, name, version)
@@ -106,13 +106,13 @@ def get_key(bucket, name, version):
 
 
 def object_exists(bucket, prefix):
-    """This function gets a bucket name and a prefix 
+    """This function gets a bucket name and a prefix
     and returns True if the path exists and contains any content in it,
     or False otherwise.
-    
+
     :param bucket: The name of the bucket.
     :param prefix: The prefix to search inside the bucket.
-    :return: True if the path exists and contains anything, and False 
+    :return: True if the path exists and contains anything, and False
     otherwise.
     """
     response = s3_client.list_objects(Bucket=bucket, Prefix=prefix)
@@ -174,9 +174,9 @@ def file_already_exists(bucket, key, download_path):
     return identical_files
 
 
-def download(bucket, name, version, location):
-    """This function is a wrapper function for boto3's S3 download function 
-    which gets a bucket name, a resource name, a version and a location to 
+def download(bucket, name, version, location, s3path=None):
+    """This function is a wrapper function for boto3's S3 download function
+    which gets a bucket name, a resource name, a version and a location to
     download to.
 
     The function first checks if the specified resource exists locally and
@@ -190,7 +190,7 @@ def download(bucket, name, version, location):
 
     Any failure will cause the exception to be printed to stdout, and the
     program to exit.
-    
+
     :param bucket: The name of the bucket.
     :param name: The name of the resource.
     :param version: The version of the resource.
@@ -198,9 +198,11 @@ def download(bucket, name, version, location):
     :return: Nothing, unless an exception is being raised.
     """
     try:
-        if not object_exists(bucket, name):
+        path = s3path if s3path else name
+        if not object_exists(bucket, path):
             raise ValueError(
                 'Binary ({0}) not found in the repository'.format(name))
+
         try:
             if not os.path.exists(location):
                 os.makedirs(location)
@@ -211,7 +213,9 @@ def download(bucket, name, version, location):
 
         download_path = location + name
         try:
-            key = get_key(bucket, name, version)
+            key = s3path if s3path \
+                else get_key(bucket, name, version)
+
             if not file_already_exists(bucket, key, download_path):
                 print('Downloading: [resource: {0}], [version: {1}]'.format(
                     name, version))

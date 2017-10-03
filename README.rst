@@ -16,6 +16,8 @@ Command line tool for downloading dependencies from a configuration file.
 The configuration file must follow the schema configured in `config/schema
 .json`.
 
+You can also specify the exact path to the file if that was uploaded manually and not by the `s3-uploader`.
+
 This is part of Onfido's team blobs store project.
 
 The purpose of this tool is to download the project's dependencies
